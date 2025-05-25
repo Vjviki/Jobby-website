@@ -18,6 +18,10 @@ In this project, let's build a **Jobby App** by applying the concepts we have le
 </div>
 <br/>
 
+**User Credentials:
+Username: rahul,
+Password: rahul@2021,
+
 ### Design Files
 
 <details>
