@@ -48,6 +48,14 @@ const salaryRangesList = [
   },
 ]
 
+const jobLocation = [
+  {location: 'Hyderabad', locationId: 'hyderabad'},
+  {location: 'Bangalore', locationId: 'bangalore'},
+  {location: 'Chennai', locationId: 'chennai'},
+  {location: 'Delhi', locationId: 'delhi'},
+  {location: 'Mumbai', locationId: 'mumbai'},
+]
+
 const status = {
   isInitial: 'INITIAL',
   isLoadingJob: 'LOADER_JOB',
@@ -67,6 +75,7 @@ class JobsRoute extends Component {
     searchResult: '',
     salaryRangeId: '',
     employmentTypeId: [],
+    selectedLocations: [],
     apiStatusJob: status.isInitial,
     apiStatusProfile: status.isInitial,
   }
@@ -107,9 +116,15 @@ class JobsRoute extends Component {
 
   getJobsDetails = async () => {
     this.setState({apiStatusJob: status.isLoadingJob})
-    const {employmentTypeId, salaryRangeId, searchResult} = this.state
+    const {
+      employmentTypeId,
+      salaryRangeId,
+      searchResult,
+      selectedLocations,
+    } = this.state
     const employmentTypeIdQuery = employmentTypeId.join(',')
-    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${employmentTypeIdQuery}&minimum_package=${salaryRangeId}&search=${searchResult}`
+    const locationQuery = selectedLocations.join(',')
+    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${employmentTypeIdQuery}&minimum_package=${salaryRangeId}&search=${searchResult}&location=${locationQuery}`
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -136,6 +151,7 @@ class JobsRoute extends Component {
         jobDetails: updatedJobs,
         apiStatusJob: status.isSuccessJob,
       })
+      console.log(data)
     } else {
       this.setState({apiStatusJob: status.isFailureFetchJob})
     }
@@ -162,6 +178,20 @@ class JobsRoute extends Component {
 
   onClickSalaryRange = id => {
     this.setState({salaryRangeId: id}, this.getJobsDetails)
+  }
+
+  onClickLocationFilter = location => {
+    this.setState(prevState => {
+      const {selectedLocations} = prevState
+      if (selectedLocations.includes(location)) {
+        return {
+          selectedLocations: selectedLocations.filter(
+            item => item !== location,
+          ),
+        }
+      }
+      return {selectedLocations: [...selectedLocations, location]}
+    }, this.getJobsDetails)
   }
 
   fetchingJobDetailsFailureItem = () => (
@@ -290,7 +320,7 @@ class JobsRoute extends Component {
               alt="profile"
               className="profile-image"
             />
-            <h1 className="profile-name">vignesh</h1>
+            <h1 className="profile-name">{name}</h1>
             <p className="profile-description">{shortBio}</p>
           </div>
         )
@@ -346,6 +376,27 @@ class JobsRoute extends Component {
                     />
                     <label htmlFor={range.salaryRangeId} className="label-text">
                       {range.label}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+              <hr className="horizontal-line" />
+              <h1 className="sort-heading">Location</h1>
+              <ul className="filter-options">
+                {jobLocation.map(eachLocation => (
+                  <li className="list-item" key={eachLocation.locationId}>
+                    <input
+                      type="checkbox"
+                      id={eachLocation.location}
+                      onChange={() =>
+                        this.onClickLocationFilter(eachLocation.location)
+                      }
+                    />
+                    <label
+                      htmlFor={eachLocation.location}
+                      className="label-text"
+                    >
+                      {eachLocation.location}
                     </label>
                   </li>
                 ))}
