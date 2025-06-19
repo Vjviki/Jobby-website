@@ -3,8 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "engines": {
-    "node": "22.x",
-    "npm": ">=6"
+    "node": "16.x",
+    "npm": ">=8"
   },
   "dependencies": {
     "@testing-library/jest-dom": "5.11.9",
@@ -21,6 +21,7 @@
     "react-router-dom": "5.2.0"
   },
   "devDependencies": {
+    "pnpm": "9.1.1",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-prettier": "3.3.1",
