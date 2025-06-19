@@ -49,11 +49,11 @@ const salaryRangesList = [
 ]
 
 const jobLocation = [
-  {location: 'Hyderabad', locationId: 'hyderabad'},
-  {location: 'Bangalore', locationId: 'bangalore'},
-  {location: 'Chennai', locationId: 'chennai'},
-  {location: 'Delhi', locationId: 'delhi'},
-  {location: 'Mumbai', locationId: 'mumbai'},
+  {location: 'Hyderabad', locationId: 'HYDERABAD'},
+  {location: 'Bangalore', locationId: 'BANGALORE'},
+  {location: 'Chennai', locationId: 'CHENNAI'},
+  {location: 'Delhi', locationId: 'DELHI'},
+  {location: 'Mumbai', locationId: 'MUMBAI'},
 ]
 
 const status = {
@@ -151,7 +151,7 @@ class JobsRoute extends Component {
         jobDetails: updatedJobs,
         apiStatusJob: status.isSuccessJob,
       })
-      console.log(data)
+      console.log(selectedLocations)
     } else {
       this.setState({apiStatusJob: status.isFailureFetchJob})
     }
@@ -389,7 +389,7 @@ class JobsRoute extends Component {
                       type="checkbox"
                       id={eachLocation.location}
                       onChange={() =>
-                        this.onClickLocationFilter(eachLocation.location)
+                        this.onClickLocationFilter(eachLocation.locationId)
                       }
                     />
                     <label
